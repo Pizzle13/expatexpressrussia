@@ -1,1 +1,650 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expat Express Russia - Your Gateway to Russia</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Reset and base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        /* Navigation */
+        header {
+            background: linear-gradient(135deg, #c41e3a 0%, #ffffff 50%, #0039a6 100%);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 5%;
+            max-width: 1400px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 0 0 20px 20px;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #c41e3a;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .logo-img {
+            height: 40px;
+            width: auto;
+            object-fit: contain;
+        }
+
+        .logo-text {
+            font-weight: 700;
+            background: linear-gradient(135deg, #c41e3a, #0039a6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2.5rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #2c3e50;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: #c41e3a;
+            background: rgba(196, 30, 58, 0.1);
+            transform: translateY(-2px);
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, rgba(196, 30, 58, 0.9) 0%, rgba(0, 57, 166, 0.9) 100%), 
+                        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800"><rect fill="%23c41e3a" width="1200" height="266"/><rect fill="%23ffffff" y="266" width="1200" height="268"/><rect fill="%230039a6" y="534" width="1200" height="266"/></svg>');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            text-align: center;
+            padding: 0 1rem;
+            position: relative;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(196, 30, 58, 0.3), rgba(0, 57, 166, 0.3));
+        }
+
+        .hero-content {
+            max-width: 900px;
+            z-index: 2;
+            position: relative;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            animation: fadeInUp 1s ease;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .hero p {
+            font-size: 1.4rem;
+            margin-bottom: 2.5rem;
+            animation: fadeInUp 1s ease 0.2s;
+            opacity: 0;
+            animation-fill-mode: forwards;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            animation: fadeInUp 1s ease 0.4s;
+            opacity: 0;
+            animation-fill-mode: forwards;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 1.2rem 2.5rem;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .cta-primary {
+            background: linear-gradient(135deg, #c41e3a, #e74c3c);
+            color: white;
+            box-shadow: 0 8px 25px rgba(196, 30, 58, 0.3);
+        }
+
+        .cta-secondary {
+            background: linear-gradient(135deg, #0039a6, #3498db);
+            color: white;
+            box-shadow: 0 8px 25px rgba(0, 57, 166, 0.3);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+        }
+
+        /* Services Section */
+        .services {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 6rem 1rem;
+        }
+
+        .services h2 {
+            text-align: center;
+            margin-bottom: 4rem;
+            color: #2c3e50;
+            font-size: 2.5rem;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 3rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .service-card {
+            background: white;
+            padding: 3rem 2rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 3px solid transparent;
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            border-color: #c41e3a;
+            box-shadow: 0 20px 60px rgba(196, 30, 58, 0.2);
+        }
+
+        .service-icon {
+            font-size: 3rem;
+            color: #c41e3a;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, #c41e3a, #0039a6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .service-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #2c3e50;
+        }
+
+        .service-card p {
+            color: #666;
+            line-height: 1.8;
+        }
+
+        /* Info Section */
+        .info-section {
+            padding: 6rem 1rem;
+            background: white;
+        }
+
+        .info-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .info-content h2 {
+            font-size: 2.5rem;
+            color: #2c3e50;
+            margin-bottom: 2rem;
+        }
+
+        .info-content p {
+            font-size: 1.1rem;
+            color: #666;
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+        }
+
+        .info-features {
+            list-style: none;
+            margin: 2rem 0;
+        }
+
+        .info-features li {
+            padding: 0.5rem 0;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .info-features li i {
+            color: #c41e3a;
+            font-size: 1.2rem;
+        }
+
+        .info-image {
+            background: linear-gradient(135deg, #c41e3a, #0039a6);
+            border-radius: 20px;
+            height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 3rem;
+        }
+
+        /* Contact Section */
+        .contact {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            padding: 6rem 1rem;
+            text-align: center;
+        }
+
+        .contact h2 {
+            color: white;
+            margin-bottom: 3rem;
+            font-size: 2.5rem;
+        }
+
+        .contact-info {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            flex-wrap: wrap;
+            margin: 3rem 0;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1.5rem 2rem;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+
+        .contact-item i {
+            font-size: 1.5rem;
+            color: #c41e3a;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .social-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #c41e3a, #0039a6);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .social-icon:hover {
+            transform: translateY(-5px) scale(1.1);
+            box-shadow: 0 10px 25px rgba(196, 30, 58, 0.4);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 3rem;
+            background: #1a1a1a;
+            color: #ccc;
+        }
+
+        /* Hamburger Menu */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            z-index: 1001;
+        }
+
+        .hamburger span {
+            width: 30px;
+            height: 3px;
+            background: linear-gradient(135deg, #c41e3a, #0039a6);
+            transition: 0.3s;
+            border-radius: 3px;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: rgba(255, 255, 255, 0.98);
+                backdrop-filter: blur(10px);
+                flex-direction: column;
+                padding: 2rem;
+                border-radius: 0 0 20px 20px;
+                box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .hamburger {
+                display: flex;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero p {
+                font-size: 1.1rem;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .info-container {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+
+            .contact-info {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .services-grid {
+                grid-template-columns: 1fr;
+                padding: 0 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .service-card {
+                padding: 2rem 1.5rem;
+            }
+
+            .cta-button {
+                padding: 1rem 2rem;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <img src="assets/logo.png" alt="Expat Express Russia" class="logo-img">
+                <span class="logo-text">Expat Express Russia</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#travel">Travel Info</a></li>
+                <li><a href="#language">Languages</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section id="home" class="hero">
+            <div class="hero-content">
+                <h1>Your Gateway to Russia</h1>
+                <p>Complete guide for travel, immigration, and language learning. From visa applications to cultural integration - we've got you covered.</p>
+                <div class="cta-buttons">
+                    <a href="#services" class="cta-button cta-primary">Explore Services</a>
+                    <a href="#travel" class="cta-button cta-secondary">Travel Guide</a>
+                </div>
+            </div>
+        </section>
+
+        <section id="services" class="services">
+            <h2>Our Services</h2>
+            <div class="services-grid">
+                <div class="service-card fade-in">
+                    <div class="service-icon">
+                        <i class="fas fa-passport"></i>
+                    </div>
+                    <h3>Visa & Immigration</h3>
+                    <p>Complete guidance on visa applications, immigration procedures, and legal requirements for moving to Russia. From tourist visas to permanent residency.</p>
+                </div>
+                
+                <div class="service-card fade-in">
+                    <div class="service-icon">
+                        <i class="fas fa-map-marked-alt"></i>
+                    </div>
+                    <h3>Travel Planning</h3>
+                    <p>Comprehensive travel guides, cultural insights, and practical tips for visiting Russia. Discover the best destinations and hidden gems.</p>
+                </div>
+                
+                <div class="service-card fade-in">
+                    <div class="service-icon">
+                        <i class="fas fa-language"></i>
+                    </div>
+                    <h3>Language Learning</h3>
+                    <p>Learn Russian and English with our structured courses. From basic conversation to business proficiency - start your language journey today.</p>
+                </div>
+                
+                <div class="service-card fade-in">
+                    <div class="service-icon">
+                        <i class="fas fa-home"></i>
+                    </div>
+                    <h3>Relocation Support</h3>
+                    <p>Housing assistance, job search guidance, and cultural integration support to help you settle into your new life in Russia.</p>
+                </div>
+                
+                <div class="service-card fade-in">
+                    <div class="service-icon">
+                        <i class="fas fa-briefcase"></i>
+                    </div>
+                    <h3>Business Setup</h3>
+                    <p>Guidance for entrepreneurs and investors looking to establish businesses in Russia. Navigate regulations and opportunities with confidence.</p>
+                </div>
+                
+                <div class="service-card fade-in">
+                    <div class="service-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3>Community Support</h3>
+                    <p>Connect with expat communities, local networks, and support groups to make your transition to Russia smoother and more enjoyable.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="travel" class="info-section">
+            <div class="info-container">
+                <div class="info-content fade-in">
+                    <h2>Why Choose Russia?</h2>
+                    <p>Russia offers incredible opportunities for travelers, students, professionals, and families looking for a new adventure. With its rich history, diverse culture, and growing economy, Russia presents unique opportunities.</p>
+                    
+                    <ul class="info-features">
+                        <li><i class="fas fa-check-circle"></i> Rich cultural heritage and history</li>
+                        <li><i class="fas fa-check-circle"></i> Growing business opportunities</li>
+                        <li><i class="fas fa-check-circle"></i> Affordable cost of living</li>
+                        <li><i class="fas fa-check-circle"></i> Excellent education system</li>
+                        <li><i class="fas fa-check-circle"></i> Beautiful landscapes and cities</li>
+                        <li><i class="fas fa-check-circle"></i> Welcoming international community</li>
+                    </ul>
+                    
+                    <p>Whether you're planning a short visit or considering a permanent move, we provide the resources and support you need for a successful experience.</p>
+                </div>
+                
+                <div class="info-image fade-in">
+                    <i class="fas fa-globe-europe"></i>
+                </div>
+            </div>
+        </section>
+
+        <section id="language" class="info-section" style="background: #f8f9fa;">
+            <div class="info-container">
+                <div class="info-image fade-in">
+                    <i class="fas fa-comments"></i>
+                </div>
+                
+                <div class="info-content fade-in">
+                    <h2>Master Russian & English</h2>
+                    <p>Language is the key to successful integration and communication. Our comprehensive language programs are designed for all levels, from complete beginners to advanced speakers.</p>
+                    
+                    <ul class="info-features">
+                        <li><i class="fas fa-graduation-cap"></i> Structured learning paths</li>
+                        <li><i class="fas fa-graduation-cap"></i> Interactive exercises and practice</li>
+                        <li><i class="fas fa-graduation-cap"></i> Cultural context and real-world usage</li>
+                        <li><i class="fas fa-graduation-cap"></i> Business and professional Russian</li>
+                        <li><i class="fas fa-graduation-cap"></i> English for Russian speakers</li>
+                        <li><i class="fas fa-graduation-cap"></i> Certification preparation</li>
+                    </ul>
+                    
+                    <p>Start your language learning journey today and open doors to better opportunities in Russia or improve your English skills for international communication.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="contact">
+            <h2>Get Started Today</h2>
+            <p>Ready to begin your Russian adventure? Contact us for personalized guidance and support.</p>
+            
+            <div class="contact-info">
+                <div class="contact-item fade-in">
+                    <i class="fas fa-envelope"></i>
+                    <div>
+                        <h4>Email Us</h4>
+                        <p>info@expatexpressrussia.com</p>
+                    </div>
+                </div>
+                
+                <div class="contact-item fade-in">
+                    <i class="fas fa-phone"></i>
+                    <div>
+                        <h4>Call Us</h4>
+                        <p>+7 (xxx) xxx-xxxx</p>
+                    </div>
+                </div>
+                
+                <div class="contact-item fade-in">
+                    <i class="fas fa-clock"></i>
+                    <div>
+                        <h4>Support Hours</h4>
+                        <p>24/7 Available</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="social-links">
+                <a href="#" class="social-icon"><i class="fab fa-telegram"></i></a>
+                <a href="#" class="social-icon"><i class="fab fa-whatsapp"></i></a>
+                <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Expat Express Russia. All rights reserved. | Your trusted partner for Russian travel and immigration</p>
+    </footer>
+
+    <script>
+        // Mobile menu functionality
+        const hamburger
